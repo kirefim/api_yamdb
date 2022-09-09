@@ -1,7 +1,6 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-User = get_user_model()
 
 SCORE_CHOICES = (
     (1, 1),
@@ -17,13 +16,38 @@ SCORE_CHOICES = (
 )
 
 
+class User(AbstractUser):
+    email = models.EmailField()
+    username = models.CharField(
+        max_length=256,
+        unique=True,
+    )
+    role = models.CharField(
+        max_length=256,
+    )
+    bio = models.TextField()
+
+    class Meta:
+        verbose_name = 'user'
+        verbose_name_plural = 'users'
+
+
 class Genre(models.Model):
+    name = models.CharField(
+        max_length=256,
+    )
+    slug = models.SlugField()
 
     class Meta:
         verbose_name = 'genre'
         verbose_name_plural = 'genres'
 
+
 class Category(models.Model):
+    name = models.CharField(
+        max_length=256,
+    )
+    slug = models.SlugField()
 
     class Meta:
         verbose_name = 'category'
@@ -31,35 +55,67 @@ class Category(models.Model):
 
 
 class Title(models.Model):
+    name = models.CharField(
+        max_length=256,
+    )
+    year = models.IntegerField()
+    description = models.TextField()
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        related_name='titles',
+        null=True
+    )
+    genre = models.ManyToManyField(
+        Genre,
+        verbose_name='Жанр',
+        through='GenreTitle'
+    )
+    rating = models.IntegerField()
 
     class Meta:
         verbose_name = 'title'
         verbose_name_plural = 'titles'
 
 
+class GenreTitle(models.Model):
+    title = models.ForeignKey(
+        Title,
+        verbose_name='Произведение',
+        on_delete=models.CASCADE)
+    genre = models.ForeignKey(
+        Genre,
+        verbose_name='Жанр',
+        on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Title and genre'
+        verbose_name_plural = 'Titles and genres'
+
+
 class Review(models.Model):
-    reviewer = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='reviewer',
-        verbose_name='Автор отзыва',
-    )
-    review = models.ForeignKey(
+    title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
         related_name='reviews',
-        verbose_name='Отзыв',
+        verbose_name='Произведение',
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        verbose_name='Автор отзыва',
     )
     text = models.TextField(
         verbose_name='Текст отзыва',
     )
-    created = models.DateTimeField(
+    pub_date = models.DateTimeField(
         verbose_name='Дата добавления отзыва',
         auto_now_add=True,
         db_index=True,
     )
     score = models.IntegerField(
-        verbose_name = 'Оценка',
+        verbose_name='Оценка',
         choices=SCORE_CHOICES,
     )
 
@@ -79,12 +135,12 @@ class Comment(models.Model):
         Review,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='Комментарий',
+        verbose_name='Отзыв',
     )
     text = models.TextField(
         verbose_name='Текст комментария',
     )
-    created = models.DateTimeField(
+    pub_date = models.DateTimeField(
         verbose_name='Дата добавления комментария',
         auto_now_add=True,
         db_index=True,

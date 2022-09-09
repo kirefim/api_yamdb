@@ -1,11 +1,8 @@
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 from rest_framework.validators import UniqueTogetherValidator
 
-from reviews.models import Comment, Review, Title
-
-User = get_user_model()
+from reviews.models import Comment, Review
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -21,14 +18,14 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    reviewer = SlugRelatedField(
+    author = SlugRelatedField(
         slug_field='username',
         read_only=True,
         default=serializers.CurrentUserDefault()
     )
     title = SlugRelatedField(
-        slug_field='pk',
-        queryset=Title.objects.all(),
+        slug_field='name',
+        read_only=True,
     )
 
     class Meta:
