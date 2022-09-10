@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -32,49 +34,60 @@ class User(AbstractUser):
 
 
 class Genre(models.Model):
-    name = models.CharField(
-        max_length=256,
-    )
-    slug = models.SlugField()
+    name = models.CharField('Жанр', max_length=256)
+    slug = models.SlugField(
+        'Ссылка на жанр', max_length=50, unique=True)
 
     class Meta:
-        verbose_name = 'genre'
-        verbose_name_plural = 'genres'
+        verbose_name = "Жанр"
+        verbose_name_plural = "Жанры"
+
+    def __str__(self):
+        return self.slug
 
 
 class Category(models.Model):
-    name = models.CharField(
-        max_length=256,
-    )
-    slug = models.SlugField()
+    name = models.CharField('Категория', max_length=256)
+    slug = models.SlugField(
+        'Ссылка на категорию', max_length=50, unique=True)
 
     class Meta:
-        verbose_name = 'category'
-        verbose_name_plural = 'categories'
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
+    def __str__(self):
+        return self.slug
 
 
 class Title(models.Model):
-    name = models.CharField(
-        max_length=256,
-    )
-    year = models.IntegerField()
-    description = models.TextField()
+    name = models.TextField('Название')
+    year = models.PositiveSmallIntegerField('Год выпуска')
+    description = models.TextField(
+        'Описание', null=True, blank=True)
+    genre = models.ManyToManyField(
+        Genre, through='GenreTitle',
+        related_name='titles',
+        verbose_name='Жанр')
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
+        null=True, blank=True,
         related_name='titles',
-        null=True
-    )
-    genre = models.ManyToManyField(
-        Genre,
-        verbose_name='Жанр',
-        through='GenreTitle'
-    )
-    rating = models.IntegerField()
+        verbose_name='Категория')
 
     class Meta:
-        verbose_name = 'title'
-        verbose_name_plural = 'titles'
+        ordering = ('year',)
+        verbose_name = "Произведение"
+        verbose_name_plural = "Произведения"
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(year__lte=datetime.datetime.now().year),
+                name='year_lte_current_year',
+            ),
+        ]
+
+    def __str__(self):
+        return self.name
 
 
 class GenreTitle(models.Model):
