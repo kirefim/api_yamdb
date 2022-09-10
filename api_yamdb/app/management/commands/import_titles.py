@@ -14,7 +14,7 @@ class Command(BaseCommand):
         with open(
             os.path.join(
                 settings.BASE_DIR, 'static/data/titles.csv'
-            ), newline=''
+            ), newline='', encoding='utf-8'
         ) as csvfile:
             reader = csv.reader(csvfile)
             next(reader, None)

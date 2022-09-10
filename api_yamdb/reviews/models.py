@@ -1,7 +1,8 @@
 import datetime
 
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+from users.models import User
 
 SCORE_CHOICES = (
     (1, 1),
@@ -15,22 +16,6 @@ SCORE_CHOICES = (
     (9, 9),
     (10, 10),
 )
-
-
-class User(AbstractUser):
-    email = models.EmailField()
-    username = models.CharField(
-        max_length=256,
-        unique=True,
-    )
-    role = models.CharField(
-        max_length=256,
-    )
-    bio = models.TextField()
-
-    class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
 
 
 class Genre(models.Model):

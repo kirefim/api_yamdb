@@ -3,6 +3,7 @@ from random import randint
 from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, mixins, status, viewsets
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
@@ -166,7 +167,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     queryset = (Title.objects.annotate(rating=Avg('reviews__score'))
                 .prefetch_related('genre'))
     permission_classes = (IsAdminOrReadOnly,)
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('category__slug', 'genre__slug', 'name', 'year',)
 
     def get_serializer_class(self):
