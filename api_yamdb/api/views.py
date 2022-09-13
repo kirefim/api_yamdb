@@ -1,15 +1,19 @@
+import email
+from email import message
 from random import randint
 
 from django.core.mail import send_mail
 from django.db.models import Avg
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, mixins, status, viewsets
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.reverse import reverse
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -21,9 +25,10 @@ from .permissions import (IsAdminModeratorOwnerOrReadOnly, IsAdminOrReadOnly,
 from .serializers import (CategorySerializer, CommentSerializer,
                           GenreSerializer, ReviewSerializer,
                           TitleReadSerializer, TitleWriteSerializer,
-                          TokenObtainPairEmailSerializer, UserSerializer)
+                          RegistrationSerializer, 
+                          TokenObtainPairEmailSerializer)
 
-CONFIRMATION_DICT = {}
+confirmation_dict = {}
 TOKENS_DICT = {}
 
 
@@ -33,75 +38,87 @@ def get_confirmation_code():
 
     return code
 
+# изменить работу эндпоинтов. токенобтэинпэир только по урлу токен
 
-class TokenObtainPairConfirmEmailView(TokenObtainPairView):
+
+class TokenObtainPairConfirmEmailView(APIView):
+    serializer_class = TokenObtainPairEmailSerializer
+
     def post(self, request, *args, **kwargs):
-        serializer = TokenObtainPairEmailSerializer(data=request.data)
+        if ('username' not in request.data or
+            'confirmation_code' not in request.data):
+            message = 'Введите данные'
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        input_username = request.data['username']
+        input_confirmation_code = request.data['confirmation_code']
+        user = get_object_or_404(User, username=input_username)
 
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
+        if input_username != user.username:
+            message = 'Неправильный логин'
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        if input_confirmation_code != user.confirmation_code:
+            message = 'Неправильный код подтверждения'
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        print('token-obtain')
 
+        return Response(user.token, status=status.HTTP_200_OK)
+
+
+# самостоятельная регистрация пользователя и создание нового п. админов - 2 разных класса
+class UserRegistration(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = RegistrationSerializer
+    
+    def post(self, serializer):
+        user = self.request.data
+
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
         confirmation_code = get_confirmation_code()
-        CONFIRMATION_DICT[kwargs['email']] = confirmation_code
-        TOKENS_DICT[kwargs['email']] = serializer.validated_data['access']
+
+        serializer.save(confirmation_code=confirmation_code,)
 
         send_mail(
             'Confirmation code',
             confirmation_code,
             'test@test.com',
-            ['']
+            [serializer.validated_data['email'], ]
         )
 
-        # Улучшить
-        if not User.objects.get(username=kwargs['username']):
-            User.objects.get(
-                username=kwargs['username'],
-                email=kwargs['email'],
-                password=kwargs['password'],
-            )
+        data = {
+            'email': serializer.validated_data['email'],
+            'username': serializer.validated_data['username']
+        }
 
-        return Response(status=status.HTTP_201_CREATED)
-
-
-class GetTokenView(APIView):
-    def post(self, request, *args, **kwargs):
-        input_email = self.kwargs['email']
-        input_confirmation_code = self.kwargs['confirmation_code']
-
-        if input_email not in CONFIRMATION_DICT:
-            raise Exception('Неправильно указана почта')
-        if CONFIRMATION_DICT[input_email] != input_confirmation_code:
-            raise Exception('Неправильный код подтверждения')
-
-        return Response(TOKENS_DICT[input_email], status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = RegistrationSerializer
     pagination_class = PageNumberPagination
     permission_classes = (IsAdminUser,)
     filter_backends = (SearchFilter,)
     search_filters = ('username',)
 
     def perform_create(self, serializer):
-        if self.kwargs['role'] == 'moderator':
-            serializer.save(is_moderator=True)
-        elif self.kwargs['role'] == 'admin':
-            serializer.save(is_staff=True)
+        if 'role' in self.request.data:
+            if self.request.data['role'] == 'moderator':
+                serializer.save(is_moderator=True)
+            elif self.request.data['role'] == 'admin':
+                serializer.save(is_staff=True)
 
     def perform_update(self, serializer):
-        if self.kwargs['role'] == 'moderator':
-            serializer.save(is_moderator=True)
-        elif self.kwargs['role'] == 'admin':
-            serializer.save(is_staff=True)
+        if 'role' in self.request.data:
+            if self.request.data['role'] == 'moderator':
+                serializer.save(is_moderator=True)
+            elif self.request.data['role'] == 'admin':
+                serializer.save(is_staff=True)
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = RegistrationSerializer
     permission_classes = (IsAuthorOrAdminPermission,)
 
 

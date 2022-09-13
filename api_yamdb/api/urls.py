@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
 from .views import (CategoryViewSet, CommentViewSet, GenreViewSet,
-                    GetTokenView, ReviewViewSet, TitleViewSet,
+                    ReviewViewSet, TitleViewSet, UserRegistration,
                     TokenObtainPairConfirmEmailView, UserDetail, UserList)
 
 v1_router = SimpleRouter()
@@ -22,12 +22,12 @@ v1_router.register(r'titles', TitleViewSet, basename='title')
 
 
 urlpatterns = [
-    path('v1/auth/signup/', TokenObtainPairConfirmEmailView.as_view(),
-         name='token_obtain_pair_not_conform'),
-    path('v1/auth/token/', GetTokenView.as_view(),
+    path('v1/auth/signup/', UserRegistration.as_view(),
+         name='user_registration'),
+    path('v1/auth/token/', TokenObtainPairConfirmEmailView.as_view(),
          name='get_token'),
-    path('users/', UserList.as_view(), name='users_list'),
-    path('users/<str:username>/', UserDetail.as_view(), name='users_detail'),
-    path('users/me/', UserDetail.as_view(), name='users_me'),
+    path('v1/users/', UserList.as_view(), name='users_list'),
+    path(r'users/(?P<username>[\w.@+-]+)' , UserDetail.as_view(), name='users_detail'),
+    path('v1/users/me/', UserDetail.as_view(), name='users_me'),
     path('v1/', include(v1_router.urls)),
 ]

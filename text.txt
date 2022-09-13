@@ -81,15 +81,15 @@ client = <django.test.client.Client object at 0x05340E50>
         outbox_after = mail.outbox  # email outbox after user create
     
         assert response.status_code != 404, (
-            f'Страница `{self.url_signup}` не найдена, проверьте этот адрес в *urls.py*'
+            f'ќќќќќќќќ `{self.url_signup}` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
     
         code = 200
 >       assert response.status_code == code, (
-            f'Проверьте, что при {request_type} запросе `{self.url_signup}` с валидными данными '
-            f'создается пользователь и возвращается статус {code}'
+            f'ќќќќќќќќќ, ќќќ ќќќ {request_type} ќќќќќќќ `{self.url_signup}` ќ ќќќќќќќќќ ќќќќќќќ '
+            f'ќќќќќќќќќ ќќќќќќќќќќќќ ќ ќќќќќќќќќќќќ ќќќќќќ {code}'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/auth/signup/` с валидными данными создается пользователь и возвращается статус 200
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/auth/signup/` ќ ќќќќќќќќќ ќќќќќќќ ќќќќќќќќќ ќќќќќќќќќќќќ ќ ќќќќќќќќќќќќ ќќќќќќ 200
 E       assert 400 == 200
 E         +400
 E         -200
@@ -118,9 +118,9 @@ admin_client = <rest_framework.test.APIClient object at 0x0532E070>
         outbox_after = mail.outbox
     
 >       assert response.status_code != 404, (
-            f'Страница `{self.url_admin_create_user}` не найдена, проверьте этот адрес в *urls.py*'
+            f'ќќќќќќќќ `{self.url_admin_create_user}` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
-E       AssertionError: Страница `/api/v1/users/` не найдена, проверьте этот адрес в *urls.py*
+E       AssertionError: ќќќќќќќќ `/api/v1/users/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*
 E       assert 404 != 404
 E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
 
@@ -221,10 +221,10 @@ client = <django.test.client.Client object at 0x056E3950>
         response = client.post(self.url_signup, data=valid_data)
         code = 200
 >       assert response.status_code == code, (
-            f'Проверьте, что при {request_type} запросе `{self.url_signup}` '
-            f'можно создать пользователя с валидными данными и возвращается статус {code}'
+            f'ќќќќќќќќќ, ќќќ ќќќ {request_type} ќќќќќќќ `{self.url_signup}` '
+            f'ќќќќќ ќќќќќќќ ќќќќќќќќќќќќ ќ ќќќќќќќќќ ќќќќќќќ ќ ќќќќќќќќќќќќ ќќќќќќ {code}'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/auth/signup/` можно создать пользователя с валидными данными и возвращается статус 200
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/auth/signup/` ќќќќќ ќќќќќќќ ќќќќќќќќќќќќ ќ ќќќќќќќќќ ќќќќќќќ ќ ќќќќќќќќќќќќ ќќќќќќ 200
 E       assert 400 == 200
 E         +400
 E         -200
@@ -242,9 +242,9 @@ client = <django.test.client.Client object at 0x05638550>
         response = client.get('/api/v1/users/')
     
 >       assert response.status_code != 404, (
-            'Страница `/api/v1/users/` не найдена, проверьте этот адрес в *urls.py*'
+            'ќќќќќќќќ `/api/v1/users/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
-E       AssertionError: Страница `/api/v1/users/` не найдена, проверьте этот адрес в *urls.py*
+E       AssertionError: ќќќќќќќќ `/api/v1/users/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*
 E       assert 404 != 404
 E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
 
@@ -262,9 +262,9 @@ admin = <User: TestAdmin>
         response = client.get(f'/api/v1/users/{admin.username}/')
     
 >       assert response.status_code != 404, (
-            'Страница `/api/v1/users/{username}/` не найдена, проверьте этот адрес в *urls.py*'
+            'ќќќќќќќќ `/api/v1/users/{username}/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
-E       AssertionError: Страница `/api/v1/users/{username}/` не найдена, проверьте этот адрес в *urls.py*
+E       AssertionError: ќќќќќќќќ `/api/v1/users/{username}/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*
 E       assert 404 != 404
 E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
 
@@ -281,9 +281,9 @@ client = <django.test.client.Client object at 0x055BCB90>
         response = client.get('/api/v1/users/me/')
     
 >       assert response.status_code != 404, (
-            'Страница `/api/v1/users/me/` не найдена, проверьте этот адрес в *urls.py*'
+            'ќќќќќќќќ `/api/v1/users/me/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
-E       AssertionError: Страница `/api/v1/users/me/` не найдена, проверьте этот адрес в *urls.py*
+E       AssertionError: ќќќќќќќќ `/api/v1/users/me/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*
 E       assert 404 != 404
 E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
 
@@ -300,9 +300,9 @@ admin = <User: TestAdmin>
     def test_04_users_get_admin(self, admin_client, admin):
         response = admin_client.get('/api/v1/users/')
 >       assert response.status_code != 404, (
-            'Страница `/api/v1/users/` не найдена, проверьте этот адрес в *urls.py*'
+            'ќќќќќќќќ `/api/v1/users/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
-E       AssertionError: Страница `/api/v1/users/` не найдена, проверьте этот адрес в *urls.py*
+E       AssertionError: ќќќќќќќќ `/api/v1/users/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*
 E       assert 404 != 404
 E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
 
@@ -321,9 +321,9 @@ admin = <User: TestAdmin>
         search_url = f'{url}?search={admin.username}'
         response = admin_client.get(search_url)
 >       assert response.status_code != 404, (
-            'Страница `/api/v1/users/?search={username}` не найдена, проверьте этот адрес в *urls.py*'
+            'ќќќќќќќќ `/api/v1/users/?search={username}` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
-E       AssertionError: Страница `/api/v1/users/?search={username}` не найдена, проверьте этот адрес в *urls.py*
+E       AssertionError: ќќќќќќќќ `/api/v1/users/?search={username}` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*
 E       assert 404 != 404
 E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
 
@@ -340,9 +340,9 @@ user_client = <rest_framework.test.APIClient object at 0x05648170>
         url = '/api/v1/users/'
         response = user_client.get(url)
 >       assert response.status_code != 404, (
-            f'Страница `{url}` не найдена, проверьте этот адрес в *urls.py*'
+            f'ќќќќќќќќ `{url}` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
-E       AssertionError: Страница `/api/v1/users/` не найдена, проверьте этот адрес в *urls.py*
+E       AssertionError: ќќќќќќќќ `/api/v1/users/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*
 E       assert 404 != 404
 E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
 
@@ -360,9 +360,9 @@ admin = <User: TestAdmin>
         empty_data = {}
         response = admin_client.post('/api/v1/users/', data=empty_data)
 >       assert response.status_code == 400, (
-            'Проверьте, что при POST запросе `/api/v1/users/` с пустыми данными возвращаетe 400'
+            'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/users/` ќ ќќќќќќќ ќќќќќќќ ќќќќќќќќќќe 400'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/users/` с пустыми данными возвращаетe 400
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/users/` ќ ќќќќќќќ ќќќќќќќ ќќќќќќќќќќe 400
 E       assert 404 == 400
 E         +404
 E         -400
@@ -386,10 +386,10 @@ user_superuser_client = <rest_framework.test.APIClient object at 0x055D2430>
         }
         response = user_superuser_client.post('/api/v1/users/', data=valid_data)
 >       assert response.status_code == 201, (
-            'Проверьте, что при POST запросе `/api/v1/users/` от суперпользователя, '
-            'с правильными данными, возвращаете статус 201.'
+            'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/users/` ќќ ќќќќќќќќќќќќќќќќќ, '
+            'ќ ќќќќќќќќќќќ ќќќќќќќ, ќќќќќќќќќќќ ќќќќќќ 201.'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/users/` от суперпользователя, с правильными данными, возвращаете статус 201.
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/users/` ќќ ќќќќќќќќќќќќќќќќќ, ќ ќќќќќќќќќќќ ќќќќќќќ, ќќќќќќќќќќќ ќќќќќќ 201.
 E       assert 404 == 201
 E         +404
 E         -201
@@ -449,9 +449,9 @@ admin = <User: TestAdmin>
     def test_06_users_username_get_not_admin(self, moderator_client, admin):
         response = moderator_client.get(f'/api/v1/users/{admin.username}/')
 >       assert response.status_code != 404, (
-            'Страница `/api/v1/users/{username}/` не найдена, проверьте этот адрес в *urls.py*'
+            'ќќќќќќќќ `/api/v1/users/{username}/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*'
         )
-E       AssertionError: Страница `/api/v1/users/{username}/` не найдена, проверьте этот адрес в *urls.py*
+E       AssertionError: ќќќќќќќќ `/api/v1/users/{username}/` ќќ ќќќќќќќ, ќќќќќќќќќ ќќќќ ќќќќќ ќ *urls.py*
 E       assert 404 != 404
 E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
 
@@ -515,10 +515,10 @@ user = <User: TestUser>
         }
         response = moderator_client.patch(f'/api/v1/users/{user.username}/', data=data)
 >       assert response.status_code == 403, (
-            'Проверьте, что при PATCH запросе `/api/v1/users/{username}/` '
-            'пользователь с ролью moderator не может изменять данные других пользователей'
+            'ќќќќќќќќќ, ќќќ ќќќ PATCH ќќќќќќќ `/api/v1/users/{username}/` '
+            'ќќќќќќќќќќќќ ќ ќќќќќ moderator ќќ ќќќќќ ќќќќќќќќ ќќќќќќ ќќќќќќ ќќќќќќќќќќќќќ'
         )
-E       AssertionError: Проверьте, что при PATCH запросе `/api/v1/users/{username}/` пользователь с ролью moderator не может изменять данные других пользователей
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ PATCH ќќќќќќќ `/api/v1/users/{username}/` ќќќќќќќќќќќќ ќ ќќќќќ moderator ќќ ќќќќќ ќќќќќќќќ ќќќќќќ ќќќќќќ ќќќќќќќќќќќќќ
 E       assert 404 == 403
 E         +404
 E         -403
@@ -541,10 +541,10 @@ user = <User: TestUser>
         }
         response = user_client.patch(f'/api/v1/users/{user.username}/', data=data)
 >       assert response.status_code == 403, (
-            'Проверьте, что при PATCH запросе `/api/v1/users/{username}/` '
-            'пользователь с ролью user не может изменять данные других пользователей'
+            'ќќќќќќќќќ, ќќќ ќќќ PATCH ќќќќќќќ `/api/v1/users/{username}/` '
+            'ќќќќќќќќќќќќ ќ ќќќќќ user ќќ ќќќќќ ќќќќќќќќ ќќќќќќ ќќќќќќ ќќќќќќќќќќќќќ'
         )
-E       AssertionError: Проверьте, что при PATCH запросе `/api/v1/users/{username}/` пользователь с ролью user не может изменять данные других пользователей
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ PATCH ќќќќќќќ `/api/v1/users/{username}/` ќќќќќќќќќќќќ ќ ќќќќќ user ќќ ќќќќќ ќќќќќќќќ ќќќќќќ ќќќќќќ ќќќќќќќќќќќќќ
 E       assert 404 == 403
 E         +404
 E         -403
@@ -568,10 +568,10 @@ user = <User: TestUser>
         response = user_client.put(f'/api/v1/users/{user.username}/', data=data)
         code = 403
 >       assert response.status_code == code, (
-            'Проверьте, что PUT запрос на `/api/v1/users/{username}/` '
-            f'не доступен и возвращается статус {code}'
+            'ќќќќќќќќќ, ќќќ PUT ќќќќќќ ќќ `/api/v1/users/{username}/` '
+            f'ќќ ќќќќќќќќ ќ ќќќќќќќќќќќќ ќќќќќќ {code}'
         )
-E       AssertionError: Проверьте, что PUT запрос на `/api/v1/users/{username}/` не доступен и возвращается статус 403
+E       AssertionError: ќќќќќќќќќ, ќќќ PUT ќќќќќќ ќќ `/api/v1/users/{username}/` ќќ ќќќќќќќќ ќ ќќќќќќќќќќќќ ќќќќќќ 403
 E       assert 404 == 403
 E         +404
 E         -403
@@ -631,10 +631,10 @@ user = <User: TestUser>
         users_before = get_user_model().objects.count()
         response = moderator_client.delete(f'/api/v1/users/{user.username}/')
 >       assert response.status_code == 403, (
-            'Проверьте, что при DELETE запросе `/api/v1/users/{username}/`'
-            'не от админа, возвращаете статус 403'
+            'ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/users/{username}/`'
+            'ќќ ќќ ќќќќќќ, ќќќќќќќќќќќ ќќќќќќ 403'
         )
-E       AssertionError: Проверьте, что при DELETE запросе `/api/v1/users/{username}/`не от админа, возвращаете статус 403
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/users/{username}/`ќќ ќќ ќќќќќќ, ќќќќќќќќќќќ ќќќќќќ 403
 E       assert 404 == 403
 E         +404
 E         -403
@@ -653,10 +653,10 @@ user = <User: TestUser>
         users_before = get_user_model().objects.count()
         response = user_client.delete(f'/api/v1/users/{user.username}/')
 >       assert response.status_code == 403, (
-            'Проверьте, что при DELETE запросе `/api/v1/users/{username}/` '
-            'не от админа, возвращаете статус 403'
+            'ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/users/{username}/` '
+            'ќќ ќќ ќќќќќќ, ќќќќќќќќќќќ ќќќќќќ 403'
         )
-E       AssertionError: Проверьте, что при DELETE запросе `/api/v1/users/{username}/` не от админа, возвращаете статус 403
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/users/{username}/` ќќ ќќ ќќќќќќ, ќќќќќќќќќќќ ќќќќќќ 403
 E       assert 404 == 403
 E         +404
 E         -403
@@ -676,10 +676,10 @@ user = <User: TestUser>
         response = user_superuser_client.delete(f'/api/v1/users/{user.username}/')
         code = 204
 >       assert response.status_code == code, (
-            'Проверьте, что при DELETE запросе `/api/v1/users/{username}/` '
-            f'от суперпользователя, возвращаете статус {code}'
+            'ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/users/{username}/` '
+            f'ќќ ќќќќќќќќќќќќќќќќќ, ќќќќќќќќќќќ ќќќќќќ {code}'
         )
-E       AssertionError: Проверьте, что при DELETE запросе `/api/v1/users/{username}/` от суперпользователя, возвращаете статус 204
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/users/{username}/` ќќ ќќќќќќќќќќќќќќќќќ, ќќќќќќќќќќќ ќќќќќќ 204
 E       assert 404 == 204
 E         +404
 E         -204
@@ -826,10 +826,10 @@ user_client = <rest_framework.test.APIClient object at 0x05703DD0>
         }
         response = user_client.patch('/api/v1/users/me/', data=data)
 >       assert response.status_code == 200, (
-            'Проверьте, что при PATCH запросе `/api/v1/users/me/`, '
-            'пользователь с ролью user может изменить свои данные, и возвращается статус 200'
+            'ќќќќќќќќќ, ќќќ ќќќ PATCH ќќќќќќќ `/api/v1/users/me/`, '
+            'ќќќќќќќќќќќќ ќ ќќќќќ user ќќќќќ ќќќќќќќќ ќќќќ ќќќќќќ, ќ ќќќќќќќќќќќќ ќќќќќќ 200'
         )
-E       AssertionError: Проверьте, что при PATCH запросе `/api/v1/users/me/`, пользователь с ролью user может изменить свои данные, и возвращается статус 200
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ PATCH ќќќќќќќ `/api/v1/users/me/`, ќќќќќќќќќќќќ ќ ќќќќќ user ќќќќќ ќќќќќќќќ ќќќќ ќќќќќќ, ќ ќќќќќќќќќќќќ ќќќќќќ 200
 E       assert 404 == 200
 E         +404
 E         -200
@@ -847,9 +847,9 @@ admin_client = <rest_framework.test.APIClient object at 0x04FD2DB0>
         create_categories(admin_client)
         response = admin_client.delete('/api/v1/categories/books/')
 >       assert response.status_code == 204, (
-            'Проверьте, что при DELETE запросе `/api/v1/categories/{slug}/` возвращаете статус 204'
+            'ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/categories/{slug}/` ќќќќќќќќќќќ ќќќќќќ 204'
         )
-E       AssertionError: Проверьте, что при DELETE запросе `/api/v1/categories/{slug}/` возвращаете статус 204
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/categories/{slug}/` ќќќќќќќќќќќ ќќќќќќ 204
 E       assert 403 == 204
 E         +403
 E         -204
@@ -867,15 +867,15 @@ admin_client = <rest_framework.test.APIClient object at 0x04F62370>
     def test_04_category_check_permission_admin(self, client, admin_client):
         categories = create_categories(admin_client)
         data = {
-            'name': 'Музыка',
+            'name': 'ќќќќќќ',
             'slug': 'music'
         }
         response = client.post('/api/v1/categories/', data=data)
 >       assert response.status_code == 401, (
-            'Проверьте, что при POST запросе `/api/v1/categories/` '
-            'без токена авторизации возвращается статус 401'
+            'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/categories/` '
+            'ќќќ ќќќќќќ ќќќќќќќќќќќ ќќќќќќќќќќќќ ќќќќќќ 401'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/categories/` без токена авторизации возвращается статус 401
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/categories/` ќќќ ќќќќќќ ќќќќќќќќќќќ ќќќќќќќќќќќќ ќќќќќќ 401
 E       assert 201 == 401
 E         +201
 E         -401
@@ -890,16 +890,16 @@ user_client = <rest_framework.test.APIClient object at 0x04F50BB0>
     def test_05_category_create_user(self, user_client):
         url = '/api/v1/categories/'
         data = {
-            'name': 'Всякое разное',
+            'name': 'ќќќќќќ ќќќќќќ',
             'slug': 'something'
         }
         response = user_client.post(url, data=data)
         code = 403
 >       assert response.status_code == code, (
-            f'Проверьте, что при POST запросе на `{url}`, создание категорий недоступно для '
-            f'пользователя с ролью user'
+            f'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ ќќ `{url}`, ќќќќќќќќ ќќќќќќќќќ ќќќќќќќќќќ ќќќ '
+            f'ќќќќќќќќќќќќ ќ ќќќќќ user'
         )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/categories/`, создание категорий недоступно для пользователя с ролью user
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ ќќ `/api/v1/categories/`, ќќќќќќќќ ќќќќќќќќќ ќќќќќќќќќќ ќќќ ќќќќќќќќќќќќ ќ ќќќќќ user
 E       assert 201 == 403
 E         +201
 E         -403
@@ -914,16 +914,16 @@ moderator_client = <rest_framework.test.APIClient object at 0x055BCB90>
     def test_06_category_create_moderator(self, moderator_client):
         url = '/api/v1/categories/'
         data = {
-            'name': 'Всякое разное',
+            'name': 'ќќќќќќ ќќќќќќ',
             'slug': 'something'
         }
         response = moderator_client.post(url, data=data)
         code = 403
 >       assert response.status_code == code, (
-            f'Проверьте, что при POST запросе на `{url}`, создание категорий недоступно для '
-            f'пользователя с ролью moderator'
+            f'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ ќќ `{url}`, ќќќќќќќќ ќќќќќќќќќ ќќќќќќќќќќ ќќќ '
+            f'ќќќќќќќќќќќќ ќ ќќќќќ moderator'
         )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/categories/`, создание категорий недоступно для пользователя с ролью moderator
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ ќќ `/api/v1/categories/`, ќќќќќќќќ ќќќќќќќќќ ќќќќќќќќќќ ќќќ ќќќќќќќќќќќќ ќ ќќќќќ moderator
 E       assert 201 == 403
 E         +201
 E         -403
@@ -939,9 +939,9 @@ admin_client = <rest_framework.test.APIClient object at 0x0564AF50>
         genres = create_genre(admin_client)
         response = admin_client.delete(f'/api/v1/genres/{genres[0]["slug"]}/')
 >       assert response.status_code == 204, (
-            'Проверьте, что при DELETE запросе `/api/v1/genres/{slug}/` возвращаете статус 204'
+            'ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/genres/{slug}/` ќќќќќќќќќќќ ќќќќќќ 204'
         )
-E       AssertionError: Проверьте, что при DELETE запросе `/api/v1/genres/{slug}/` возвращаете статус 204
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ DELETE ќќќќќќќ `/api/v1/genres/{slug}/` ќќќќќќќќќќќ ќќќќќќ 204
 E       assert 403 == 204
 E         +403
 E         -204
@@ -959,15 +959,15 @@ admin_client = <rest_framework.test.APIClient object at 0x05340250>
     def test_04_genres_check_permission(self, client, admin_client):
         genres = create_genre(admin_client)
         data = {
-            'name': 'Боевик',
+            'name': 'ќќќќќќ',
             'slug': 'action'
         }
         response = client.post('/api/v1/genres/', data=data)
 >       assert response.status_code == 401, (
-            'Проверьте, что при POST запросе `/api/v1/genres/` '
-            'без токена авторизации возвращается статус 401'
+            'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/genres/` '
+            'ќќќ ќќќќќќ ќќќќќќќќќќќ ќќќќќќќќќќќќ ќќќќќќ 401'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/genres/` без токена авторизации возвращается статус 401
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/genres/` ќќќ ќќќќќќ ќќќќќќќќќќќ ќќќќќќќќќќќќ ќќќќќќ 401
 E       assert 201 == 401
 E         +201
 E         -401
@@ -982,16 +982,16 @@ user_client = <rest_framework.test.APIClient object at 0x04F238D0>
     def test_05_genre_create_user(self, user_client):
         url = '/api/v1/genres/'
         data = {
-            'name': 'Всякое разное',
+            'name': 'ќќќќќќ ќќќќќќ',
             'slug': 'something'
         }
         response = user_client.post(url, data=data)
         code = 403
 >       assert response.status_code == code, (
-            f'Проверьте, что при POST запросе на `{url}`, создание жанров недоступно для '
-            f'пользователя с ролью user'
+            f'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ ќќ `{url}`, ќќќќќќќќ ќќќќќќ ќќќќќќќќќќ ќќќ '
+            f'ќќќќќќќќќќќќ ќ ќќќќќ user'
         )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/genres/`, создание жанров недоступно для пользователя с ролью user
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ ќќ `/api/v1/genres/`, ќќќќќќќќ ќќќќќќ ќќќќќќќќќќ ќќќ ќќќќќќќќќќќќ ќ ќќќќќ user
 E       assert 201 == 403
 E         +201
 E         -403
@@ -1006,16 +1006,16 @@ moderator_client = <rest_framework.test.APIClient object at 0x0508DF30>
     def test_06_genre_create_moderator(self, moderator_client):
         url = '/api/v1/genres/'
         data = {
-            'name': 'Всякое разное',
+            'name': 'ќќќќќќ ќќќќќќ',
             'slug': 'something'
         }
         response = moderator_client.post(url, data=data)
         code = 403
 >       assert response.status_code == code, (
-            f'Проверьте, что при POST запросе на `{url}`, создание жанров недоступно для '
-            f'пользователя с ролью moderator'
+            f'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ ќќ `{url}`, ќќќќќќќќ ќќќќќќ ќќќќќќќќќќ ќќќ '
+            f'ќќќќќќќќќќќќ ќ ќќќќќ moderator'
         )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/genres/`, создание жанров недоступно для пользователя с ролью moderator
+E       AssertionError: ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ ќќ `/api/v1/genres/`, ќќќќќќќќ ќќќќќќ ќќќќќќќќќќ ќќќ ќќќќќќќќќќќќ ќ ќќќќќ moderator
 E       assert 201 == 403
 E         +201
 E         -403
@@ -1033,10 +1033,10 @@ admin_client = <rest_framework.test.APIClient object at 0x04FDDA90>
         data = {}
         response = admin_client.post('/api/v1/titles/', data=data)
         assert response.status_code == 400, (
-            'Проверьте, что при POST запросе `/api/v1/titles/` с не правильными данными возвращает статус 400'
+            'ќќќќќќќќќ, ќќќ ќќќ POST ќќќќќќќ `/api/v1/titles/` ќ ќќ ќќќќќќќќќќќ ќќќќќќќ ќќќќќќќќќќ ќќќќќќ 400'
         )
-        data = {'name': 'Поворот туда', 'year': 2000, 'genre': [genres[0]['slug'], genres[1]['slug']],
-                'category': categories[0]['slug'], 'description': 'Крутое пике'}
+        data = {'name': 'ќќќќќќќ ќќќќ', 'year': 2000, 'genre': [genres[0]['slug'], genres[1]['slug']],
+                'category': categories[0]['slug'], 'description': 'ќќќќќќ ќќќќ'}
 >       response = admin_client.post('/api/v1/titles/', data=data)
 
 tests\test_04_title.py:30: 
@@ -1079,7 +1079,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1168,7 +1168,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1256,7 +1256,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1344,7 +1344,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1432,7 +1432,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1523,7 +1523,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1614,7 +1614,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1705,7 +1705,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1795,7 +1795,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1888,7 +1888,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -1981,7 +1981,7 @@ tests\common.py:68: in create_titles
     return ReturnDict(ret, serializer=self)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = {}, args = (<Title: Поворот туда>,), kwargs = {}
+self = {}, args = (<Title: ќќќќќќќ ќќќќ>,), kwargs = {}
 
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer')
@@ -2018,7 +2018,8 @@ Traceback (most recent call last):
     super().__init__(*args, **kwargs)
 TypeError: 'Title' object is not iterable
 -------------------------- Captured stderr teardown ---------------------------
-Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+
 ============================== warnings summary ===============================
 ..\venv\lib\site-packages\pkg_resources\_vendor\pyparsing.py:943
   e:\dev\s_10_project\venv\lib\site-packages\pkg_resources\_vendor\pyparsing.py:943: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working
