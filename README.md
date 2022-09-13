@@ -54,36 +54,36 @@ pip install -r requirements.txt
 Выполнить миграции:
 
 ```
-python3 manage.py migrate
+python manage.py migrate
 ```
 Заполнить базу данных. Последовательно выполнить семь команд:
 
 ```
-python3 manage.py import_users
+python manage.py import_users
 ```
 
 ```
-python3 manage.py import_categories
+python manage.py import_categories
 ```
 
 ```
-python3 manage.py import_genres
+python manage.py import_genres
 ```
 
 ```
-python3 manage.py import_titles
+python manage.py import_titles
 ```
 
 ```
-python3 manage.py import_genre_titles
+python manage.py import_genre_titles
 ```
 
 ```
-python3 manage.py import_reviews
+python manage.py import_reviews
 ```
 
 ```
-python3 manage.py import_comments
+python manage.py import_comments
 ```
 
 Запустить проект:
@@ -239,7 +239,7 @@ PATCH http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comment
 Удаление комментария к отзыву
 
 ```
-http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/
+DELETE http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/
 ```
 
 #### USERS

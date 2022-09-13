@@ -2,9 +2,10 @@ asgiref==3.5.2
 attrs==22.1.0
 certifi==2022.6.15
 charset-normalizer==2.0.12
-Django==4.1.1
-django-filter==22.1
+Django==2.2.16
+django-filter==2.2.0
 djangorestframework==3.12.4
+djangorestframework-simplejwt==4.7.2
 idna==3.3
 iniconfig==1.1.1
 packaging==21.3

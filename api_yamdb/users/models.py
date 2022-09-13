@@ -51,6 +51,14 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    ADMIN = 'admin'
+    MODERATOR = 'moderator'
+    USER = 'user'
+    CHOISES = (
+        (ADMIN, 'Administrator'),
+        (MODERATOR, 'Moderator'),
+        (USER, 'User'),
+    )
     username = models.CharField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(db_index=True, unique=True)
     bio = models.TextField(
@@ -62,20 +70,30 @@ class User(AbstractUser):
         'Роль пользователя',
         max_length=30,
         choices=CHOICES,
+        default=USER,
     )
-    is_moderator = models.BooleanField(
-        'Модератор',
-        default=False,
-    )
-    confirmation_code = models.CharField(
-        'Код подтверждения',
-        max_length=10
-    )
-    objects = UserManager()
+    #is_moderator = models.BooleanField(
+    #    'Модератор',
+    #    default=False,
+    #)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+    #confirmation_code = models.CharField(
+    #    'Код подтверждения',
+    #    max_length=10
+    #)
+    #objects = UserManager()
+    @property
+    def is_moderator(self):
+        return self.role == self.MODERATOR
+    
+    @property
+    def is_admin(self):
+        return self.role == self.ADMIN
 
-    def __str__(self):
-        """ Строковое представление модели (отображается в консоли) """
-        return self.username
+    #def __str__(self):
+    #    """ Строковое представление модели (отображается в консоли) """
+    #    return self.username
 
     @property
     def token(self):

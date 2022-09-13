@@ -1,8 +1,9 @@
 import datetime
 
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from users.models import User
+#from users.models import User
 
 SCORE_CHOICES = (
     (1, 1),
@@ -17,6 +18,58 @@ SCORE_CHOICES = (
     (10, 10),
 )
 
+
+class User(AbstractUser):
+    ADMIN = 'admin'
+    MODERATOR = 'moderator'
+    USER = 'user'
+    ROLES = (
+        (ADMIN, 'administrator'),
+        (MODERATOR, 'moderator'),
+        (USER, 'user'),
+    )
+    email = models.EmailField(
+        verbose_name='Адрес электронной почты',
+        unique=True,
+    )
+    username = models.CharField(
+        verbose_name='Имя пользователя',
+        max_length=150,
+        null=True,
+        unique=True
+    )
+    role = models.CharField(
+        verbose_name='Роль',
+        max_length=50,
+        choices=ROLES,
+        default=USER
+    )
+    bio = models.TextField(
+        verbose_name='О себе',
+        null=True,
+        blank=True
+    )
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ('username',)
+
+    @property
+    def is_admin(self):
+        return self.role == self.ADMIN
+    
+    @property
+    def is_moderator(self):
+        return self.role == self.MODERATOR
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+        constraints = (
+            models.CheckConstraint(
+                check=~models.Q(username__iexact="me"),
+                name="username_is_not_me"
+            ),
+        )
 
 class Genre(models.Model):
     name = models.CharField('Жанр', max_length=256)
@@ -45,8 +98,8 @@ class Category(models.Model):
 
 
 class Title(models.Model):
-    name = models.TextField('Название')
-    year = models.PositiveSmallIntegerField('Год выпуска')
+    name = models.CharField('Название', max_length=200)
+    year = models.IntegerField('Год выпуска')
     description = models.TextField(
         'Описание', null=True, blank=True)
     genre = models.ManyToManyField(
@@ -56,9 +109,15 @@ class Title(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
-        null=True, blank=True,
+        null=True,
+        blank=True,
         related_name='titles',
         verbose_name='Категория')
+    rating = models.IntegerField(
+        verbose_name='Рейтинг',
+        null=True,
+        default=None,
+    ) 
 
     class Meta:
         ordering = ('year',)
@@ -119,7 +178,12 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'review'
         verbose_name_plural = 'reviews'
-
+        constraints = [
+            models.UniqueConstraint(
+                fields=('title', 'author',),
+                name='unique_review'
+            ),
+        ]
 
 class Comment(models.Model):
     author = models.ForeignKey(
