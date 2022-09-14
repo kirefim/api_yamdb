@@ -94,9 +94,11 @@ class ReviewSerializer(serializers.ModelSerializer):
         )
         title = get_object_or_404(Title, id=title_id)
         user = self.context['request'].user
-        if (self.context['request'].method == 'POST'
-            and Review.objects.filter(author=user, title=title).exists()):
-                raise ParseError('Вы уже оставили отзыв, спасибо!')
+        if (
+            self.context['request'].method == 'POST'
+            and Review.objects.filter(author=user, title=title).exists()
+        ):
+            raise ParseError('Вы уже оставили отзыв, спасибо!')
         return data
 
 
