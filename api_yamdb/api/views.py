@@ -1,13 +1,9 @@
-import email
-from email import message
-from random import randint
-
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.db.models import Avg
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, generics, mixins, status, viewsets
+from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -16,27 +12,13 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from .filters import TitlesFilter
 from reviews.models import Category, Genre, Review, Title, User
-#from users.models import User
-
-from .permissions import (IsAdminModeratorOwnerOrReadOnly,IsAdmin,
+from .permissions import (IsAdminModeratorOwnerOrReadOnly, IsAdmin,
                           IsAdminOrReadOnly)
 from .serializers import (CategorySerializer, CommentSerializer,
                           GenreSerializer, ReviewSerializer,
                           TitleReadSerializer, TitleWriteSerializer,
-                          RegistrationSerializer, UserSerializer, UserEditSerializer,
-                          TokenSerializer)
-
-#confirmation_dict = {}
-#TOKENS_DICT = {}
-
-
-#def get_confirmation_code():
-#    symbols = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890'
-#    code = ''.join(symbols[randint(0, len(symbols) - 1)] for i in range(6))
-
-#    return code
-
-# изменить работу эндпоинтов. токенобтэинпэир только по урлу токен
+                          RegistrationSerializer, UserSerializer,
+                          UserEditSerializer, TokenSerializer)
 
 
 @api_view(["POST"])
@@ -54,7 +36,6 @@ def get_jwt_token(request):
     ):
         token = AccessToken.for_user(user)
         return Response({"token": str(token)}, status=status.HTTP_200_OK)
-
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -93,7 +74,6 @@ def register_users(request):
             from_email='test@test.com',
             recipient_list=(user.email,),
         )
-
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -160,7 +140,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         title_id = self.kwargs.get('title_id')
         review_id = self.kwargs.get('review_id')
         review = get_object_or_404(Review, id=review_id, title=title_id)
-        serializer.save(author=self.request.user, review=review)    
+        serializer.save(author=self.request.user, review=review)
 
 
 class ListCreateDestoyViewSet(mixins.CreateModelMixin,
@@ -196,8 +176,9 @@ class TitleViewSet(viewsets.ModelViewSet):
     Обработка запросов на получение/создание/изменение/удаление произведений.
     Поддерживаемые HTTP-методы: GET/POST/PATCH/DELETE.
     '''
-    queryset = Title.objects.all().annotate(Avg('reviews__score')).order_by('name')
-            #    .prefetch_related('genre'))
+    queryset = (Title.objects.order_by('year').select_related('category')
+                .prefetch_related('genre')
+                .annotate(rating=Avg('reviews__score')))
     serializer_class = TitleWriteSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)

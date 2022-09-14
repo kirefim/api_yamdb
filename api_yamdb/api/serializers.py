@@ -1,17 +1,11 @@
-#import datetime as dt
-from email.policy import default
-
-#from django.contrib.auth.hashers import make_password
+import datetime as dt
 
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError, ParseError
+from rest_framework.exceptions import ParseError
 from rest_framework.generics import get_object_or_404
-from rest_framework.validators import UniqueTogetherValidator, UniqueValidator
-# from rest_framework_simplejwt.serializers import (TokenObtainPairSerializer,
-#                                                  PasswordField)
+from rest_framework.validators import UniqueValidator
 
 from reviews.models import Category, Comment, Genre, Review, Title, User
-#from users.models import CHOICES, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         validators=(
             UniqueValidator(queryset=User.objects.all()),
-        ) 
+        )
     )
 
     class Meta:
@@ -52,12 +46,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
             UniqueValidator(queryset=User.objects.all()),
         )
     )
-    
+
     def validate_username(self, value):
         if value.lower() == "me":
             raise serializers.ValidationError("Username 'me' is not valid")
         return value
-        
+
     class Meta:
         fields = ("username", "email")
         model = User
@@ -93,7 +87,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Review
-    
+
     def validate(self, data):
         title_id = (
             self.context['request'].parser_context['kwargs']['title_id']
@@ -119,23 +113,28 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class TitleReadSerializer(serializers.ModelSerializer):
-    rating = serializers.IntegerField(
-        source='reviews__score__avg', read_only=True
-    )
-    genre = GenreSerializer(many=True)
     category = CategorySerializer()
+    genre = GenreSerializer(many=True)
+    rating = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Title
         fields = '__all__'
 
+
 class TitleWriteSerializer(TitleReadSerializer):
-    genre = serializers.SlugRelatedField(
-        slug_field='slug', many=True, queryset=Genre.objects.all()
-    )
     category = serializers.SlugRelatedField(
-        slug_field='slug', queryset=Category.objects.all()
-    )
+        queryset=Category.objects.all(),
+        slug_field='slug')
+    genre = serializers.SlugRelatedField(
+        queryset=Genre.objects.all(),
+        slug_field='slug', many=True)
+    year = serializers.IntegerField(min_value=0,
+                                    max_value=dt.datetime.now().year)
+
+    def to_representation(self, instance):
+        serializer = TitleReadSerializer(instance)
+        return serializer.data
 
     class Meta:
         model = Title

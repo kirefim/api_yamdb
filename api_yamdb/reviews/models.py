@@ -1,10 +1,9 @@
-import datetime
+import datetime as dt
 
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-#from users.models import User
 
 SCORE_CHOICES = (
     (1, 1),
@@ -56,12 +55,13 @@ class User(AbstractUser):
     @property
     def is_admin(self):
         return self.role == self.ADMIN
-    
+
     @property
     def is_moderator(self):
         return self.role == self.MODERATOR
 
     class Meta:
+        ordering = ('pk',)
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
@@ -72,12 +72,14 @@ class User(AbstractUser):
             ),
         )
 
+
 class Genre(models.Model):
     name = models.CharField('Жанр', max_length=256)
     slug = models.SlugField(
         'Ссылка на жанр', max_length=50, unique=True)
 
     class Meta:
+        ordering = ('pk',)
         verbose_name = "Жанр"
         verbose_name_plural = "Жанры"
 
@@ -91,6 +93,7 @@ class Category(models.Model):
         'Ссылка на категорию', max_length=50, unique=True)
 
     class Meta:
+        ordering = ('pk',)
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
@@ -114,11 +117,6 @@ class Title(models.Model):
         blank=True,
         related_name='titles',
         verbose_name='Категория')
-    rating = models.IntegerField(
-        verbose_name='Рейтинг',
-        null=True,
-        default=None,
-    ) 
 
     class Meta:
         ordering = ('year',)
@@ -126,7 +124,7 @@ class Title(models.Model):
         verbose_name_plural = "Произведения"
         constraints = [
             models.CheckConstraint(
-                check=models.Q(year__lte=datetime.datetime.now().year),
+                check=models.Q(year__lte=dt.datetime.now().year),
                 name='year_lte_current_year',
             ),
         ]
@@ -180,6 +178,7 @@ class Review(models.Model):
     )
 
     class Meta:
+        ordering = ('pub_date',)
         verbose_name = 'review'
         verbose_name_plural = 'reviews'
         constraints = [
@@ -188,6 +187,7 @@ class Review(models.Model):
                 name='unique_review'
             ),
         ]
+
 
 class Comment(models.Model):
     author = models.ForeignKey(
@@ -212,5 +212,6 @@ class Comment(models.Model):
     )
 
     class Meta:
+        ordering = ('pub_date',)
         verbose_name = 'comment'
         verbose_name_plural = 'comments'

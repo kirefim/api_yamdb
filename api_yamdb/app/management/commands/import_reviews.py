@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 next(reader, None)
                 for row in reader:
                     Review.objects.create(
-                     #   id=row[0],
+                        id=row[0],
                         title_id=row[1],
                         text=row[2],
                         author=User.objects.get(id=row[3]),
