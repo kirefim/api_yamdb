@@ -117,7 +117,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     permission_classes = (
         IsAdminModeratorOwnerOrReadOnly,
-        IsAuthenticated,
     )
 
     def get_queryset(self):

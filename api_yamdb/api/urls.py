@@ -7,12 +7,12 @@ from .views import (CategoryViewSet, CommentViewSet, GenreViewSet,
 
 v1_router = SimpleRouter()
 v1_router.register(
-    r'titles/(?P<title_id>\\d+)/reviews/(?P<review_id>\\d+)/comments/',
+    r'titles/(?P<title_id>\d+)/reviews/(?P<review_id>\d+)/comments',
     CommentViewSet,
     basename='comments'
 )
 v1_router.register(
-    r'titles/(?P<title_id>\\d+)/reviews/',
+    r'titles/(?P<title_id>\d+)/reviews',
     ReviewViewSet,
     basename='reviews'
 )

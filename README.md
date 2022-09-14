@@ -59,7 +59,7 @@ python manage.py migrate
 Заполнить базу данных. Последовательно выполнить семь команд:
 
 ```
-python manage.py import_users
+python manage.py import_users 
 ```
 
 ```

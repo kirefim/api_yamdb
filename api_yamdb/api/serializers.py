@@ -1,12 +1,14 @@
-import datetime as dt
+#import datetime as dt
 from email.policy import default
 
-from django.contrib.auth.hashers import make_password
+#from django.contrib.auth.hashers import make_password
 
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import get_object_or_404
 from rest_framework.validators import UniqueTogetherValidator, UniqueValidator
-from rest_framework_simplejwt.serializers import (TokenObtainPairSerializer,
-                                                  PasswordField)
+# from rest_framework_simplejwt.serializers import (TokenObtainPairSerializer,
+#                                                  PasswordField)
 
 from reviews.models import Category, Comment, Genre, Review, Title, User
 #from users.models import CHOICES, User
@@ -95,7 +97,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         validators = (
             UniqueTogetherValidator(
                 queryset=Review.objects.all(),
-                fields=('reviewer', 'title',),
+                fields=('author', 'title',),
                 message='На это произведение Вы уже оставляли отзыв.',),
         )
 

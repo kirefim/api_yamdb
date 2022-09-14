@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 #from users.models import User
@@ -170,9 +171,12 @@ class Review(models.Model):
         auto_now_add=True,
         db_index=True,
     )
-    score = models.IntegerField(
+    score = models.PositiveSmallIntegerField(
         verbose_name='Оценка',
-        choices=SCORE_CHOICES,
+        validators=(
+            MinValueValidator(1, 'Допустимы значения от 1 до 10'),
+            MaxValueValidator(10, 'Допустимы значения от 1 до 10')
+        )
     )
 
     class Meta:
