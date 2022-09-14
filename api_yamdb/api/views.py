@@ -10,15 +10,16 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 
-from .filters import TitlesFilter
 from reviews.models import Category, Genre, Review, Title, User
-from .permissions import (IsAdminModeratorOwnerOrReadOnly, IsAdmin,
+
+from .filters import TitlesFilter
+from .permissions import (IsAdmin, IsAdminModeratorOwnerOrReadOnly,
                           IsAdminOrReadOnly)
 from .serializers import (CategorySerializer, CommentSerializer,
-                          GenreSerializer, ReviewSerializer,
-                          TitleReadSerializer, TitleWriteSerializer,
-                          RegistrationSerializer, UserSerializer,
-                          UserEditSerializer, TokenSerializer)
+                          GenreSerializer, RegistrationSerializer,
+                          ReviewSerializer, TitleReadSerializer,
+                          TitleWriteSerializer, TokenSerializer,
+                          UserEditSerializer, UserSerializer)
 
 
 @api_view(["POST"])
