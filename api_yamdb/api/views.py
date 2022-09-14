@@ -61,22 +61,40 @@ def get_jwt_token(request):
 @api_view(["POST"])
 @permission_classes((AllowAny,))
 def register_users(request):
-    serializer = RegistrationSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    user = get_object_or_404(
-        User,
-        username=serializer.validated_data['username']
-    )
-    confirmation_code = default_token_generator.make_token(user)
-    send_mail(
-        subject=' ',
-        message=f'Токен: {confirmation_code}',
-        from_email=None,
-        recipient_list=(user.email,),
-    )
+    try:
+        user = User.objects.filter(
+            username=request.data['username'],
+            email=request.data['email']
+        )
+        confirmation_code = default_token_generator.make_token(user)
+        send_mail(
+            subject='Код подтверждения',
+            message=f'Токен: {confirmation_code}',
+            from_email='test@test.com',
+            recipient_list=(user.email,),
+        )
+        data = {
+            "username": user.username,
+            "email": user.email
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    except:
+        serializer = RegistrationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        user = get_object_or_404(
+            User,
+            username=serializer.validated_data['username']
+        )
+        confirmation_code = default_token_generator.make_token(user)
+        send_mail(
+            subject='Код подтверждения',
+            message=f'Токен: {confirmation_code}',
+            from_email='test@test.com',
+            recipient_list=(user.email,),
+        )
 
-    return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -120,7 +138,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     )
 
     def get_queryset(self):
-        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
+        title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
         return title.reviews.all()
 
     def perform_create(self, serializer):
