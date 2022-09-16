@@ -1,3 +1,4 @@
+from typing import Dict
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.db.models import Avg
@@ -44,11 +45,17 @@ def get_jwt_token(request):
 @permission_classes((AllowAny,))
 def register_user(request):
     try:
-        user = get_object_or_404(User, username=request.data['username'])
+        user = get_object_or_404(User,username=request.data['username'],
+                                 email=request.data['email'])
+        data = {
+            'username': user.username,
+            'email': user.email
+        }
     except Exception:
-        serializer = UserSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data, fields = ('username', 'email'))
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        data = serializer.data
     confirmation_code = default_token_generator.make_token(user)
     send_mail(
         subject='Код подтверждения',
@@ -56,7 +63,7 @@ def register_user(request):
         from_email='test@test.com',
         recipient_list=(user.email,),
     )
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(data, status=status.HTTP_200_OK)
 
 
 class UserViewSet(viewsets.ModelViewSet):
