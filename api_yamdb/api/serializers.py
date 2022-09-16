@@ -1,5 +1,7 @@
 import datetime as dt
 
+from django.core.validators import RegexValidator
+
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 from rest_framework.generics import get_object_or_404
@@ -10,9 +12,13 @@ from reviews.models import Category, Comment, Genre, Review, Title, User
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
-        validators=(
+        validators=[
             UniqueValidator(queryset=User.objects.all()),
-        ),
+            RegexValidator(
+                regex=r'^[\w.@+-]{1,150}',
+                message='Недопустимое имя пользователя'
+            )
+        ],
         required=True,
     )
     email = serializers.EmailField(
@@ -26,6 +32,11 @@ class UserSerializer(serializers.ModelSerializer):
                   "last_name", "bio", "role")
         model = User
 
+    def validate_username(self, value):
+        if value.lower() == "me":
+            raise serializers.ValidationError("Username 'me' не допустимо")
+        return value
+
 
 class UserEditSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,28 +44,6 @@ class UserEditSerializer(serializers.ModelSerializer):
                   "last_name", "bio", "role")
         model = User
         read_only_fields = ('role',)
-
-
-class RegistrationSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(
-        validators=(
-            UniqueValidator(queryset=User.objects.all()),
-        )
-    )
-    email = serializers.EmailField(
-        validators=(
-            UniqueValidator(queryset=User.objects.all()),
-        )
-    )
-
-    def validate_username(self, value):
-        if value.lower() == "me":
-            raise serializers.ValidationError("Username 'me' is not valid")
-        return value
-
-    class Meta:
-        fields = ("username", "email")
-        model = User
 
 
 class TokenSerializer(serializers.Serializer):

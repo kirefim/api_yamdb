@@ -16,7 +16,7 @@ from .filters import TitlesFilter
 from .permissions import (IsAdmin, IsAdminModeratorOwnerOrReadOnly,
                           IsAdminOrReadOnly)
 from .serializers import (CategorySerializer, CommentSerializer,
-                          GenreSerializer, RegistrationSerializer,
+                          GenreSerializer,
                           ReviewSerializer, TitleReadSerializer,
                           TitleWriteSerializer, TokenSerializer,
                           UserEditSerializer, UserSerializer)
@@ -42,40 +42,21 @@ def get_jwt_token(request):
 
 @api_view(["POST"])
 @permission_classes((AllowAny,))
-def register_users(request):
+def register_user(request):
     try:
-        user = User.objects.filter(
-            username=request.data['username'],
-            email=request.data['email']
-        )
-        confirmation_code = default_token_generator.make_token(user)
-        send_mail(
-            subject='Код подтверждения',
-            message=f'Токен: {confirmation_code}',
-            from_email='test@test.com',
-            recipient_list=(user.email,),
-        )
-        data = {
-            "username": user.username,
-            "email": user.email
-        }
-        return Response(data, status=status.HTTP_200_OK)
+        user = get_object_or_404(User, username=request.data['username'])
     except Exception:
-        serializer = RegistrationSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        user = get_object_or_404(
-            User,
-            username=serializer.validated_data['username']
-        )
-        confirmation_code = default_token_generator.make_token(user)
-        send_mail(
-            subject='Код подтверждения',
-            message=f'Токен: {confirmation_code}',
-            from_email='test@test.com',
-            recipient_list=(user.email,),
-        )
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        user = serializer.save()
+    confirmation_code = default_token_generator.make_token(user)
+    send_mail(
+        subject='Код подтверждения',
+        message=f'Токен: {confirmation_code}',
+        from_email='test@test.com',
+        recipient_list=(user.email,),
+    )
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserViewSet(viewsets.ModelViewSet):

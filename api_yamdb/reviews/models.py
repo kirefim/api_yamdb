@@ -1,21 +1,9 @@
 import datetime as dt
 
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import (MaxValueValidator, MinValueValidator,
+                                    RegexValidator)
 from django.db import models
-
-SCORE_CHOICES = (
-    (1, 1),
-    (2, 2),
-    (3, 3),
-    (4, 4),
-    (5, 5),
-    (6, 6),
-    (7, 7),
-    (8, 8),
-    (9, 9),
-    (10, 10),
-)
 
 
 class User(AbstractUser):
@@ -35,7 +23,13 @@ class User(AbstractUser):
         verbose_name='Имя пользователя',
         max_length=150,
         null=True,
-        unique=True
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^[\w.@+-]{1,150}',
+                message='Недопустимое имя пользователя'
+            )
+        ]
     )
     role = models.CharField(
         verbose_name='Роль',
@@ -53,7 +47,7 @@ class User(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.role == self.ADMIN
+        return self.role == self.ADMIN or self.is_superuser
 
     @property
     def is_moderator(self):
@@ -143,8 +137,8 @@ class GenreTitle(models.Model):
         on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'Title and genre'
-        verbose_name_plural = 'Titles and genres'
+        verbose_name = 'Произведения и жанры'
+        verbose_name_plural = 'Произведения и жанры'
 
 
 class Review(models.Model):
